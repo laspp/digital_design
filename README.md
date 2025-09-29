@@ -12,5 +12,12 @@ These notes are intended solely for educational purposes. They are not a replace
 Feel free to use and share these materials with your classmates, but please do not distribute them outside of the course. If you find any errors or have suggestions for improvement, please open an issue or submit a pull request.
 
 
+## Table of Contents
+
+### Part I: Introduction to Digital Design
+- [1.1 Overview of Digital Systems](./example.md)
+
+
+
 © 2025 [Your Name].  
 [![CC BY-NC-ND 4.0](https://licensebuttons.net/l/by-nc-nd/4.0/88x31.png)](https://creativecommons.org/licenses/by-nc-nd/4.0/)

@@ -5,9 +5,9 @@ This document provides a comprehensive overview of all topics covered in the Dig
 ## Table of Contents
 
 ### Part I: Introduction to Digital Design
-- [1.1 Overview of Digital Systems](#11-overview-of-digital-systems)
-- [1.2 Number Systems and Codes](#12-number-systems-and-codes)
-- [1.3 Boolean Algebra Fundamentals](#13-boolean-algebra-fundamentals)
+- [1.1 Overview of Digital Systems](./example.md)
+- [1.2 Number Systems and Codes](./example.md)
+- [1.3 Boolean Algebra Fundamentals](./example.md)
 
 ### Part II: Combinational Logic
 - [2.1 Logic Gates and Truth Tables](#21-logic-gates-and-truth-tables)
