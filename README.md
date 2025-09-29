@@ -18,3 +18,6 @@ Feel free to use and share these materials with your classmates, but please do n
 - [1.1 PN Junction & CMOS](./01-Intro.md)
 - [1.2 Digital Integrated Circuit](./02-DIC.md)
 - [1.3 FPGA](./03-FPGA.md)
+
+### Part II: Introduction to System Verilog
+- [2.1 Basics of System Verilog](./04-IntrotoSV.md)
