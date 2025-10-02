@@ -81,7 +81,8 @@ High noise margins. High and low output levels equal to Vdd and GND (or -Vdd).
 <img src="./img/01/Screenshot 2024-09-18 at 15.19.06.png" alt="MOS" width="300">
 
 ### Power  
-∏
+CMOS technology is known for its low power consumption, which is one of its most significant advantages. The power consumption in CMOS circuits can be broadly categorized into two types: static power (leakage power) and dynamic power.
+
 #### Static Power (Leakage Power):
 
 This is the power consumed when the circuit is not switching. It is mainly due to leakage currents that flow through the transistors even when they are supposed to be off. Leakage power becomes significant in modern, highly scaled-down technologies.
