@@ -70,9 +70,7 @@
   - Gate Array: the basic elements are gates or groups of transistors.
     - Not connected, connected when manufactured 
 
-<!---  
-
-## Design cycle 
+## Design cycle for ASICs
 
 ### The Y chart 
 
@@ -171,7 +169,6 @@
   - Post-layout timing verification.
   - Post-layout simulation.
 
---->
 
 ## SASIC 
 

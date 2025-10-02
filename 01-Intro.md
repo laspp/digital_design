@@ -67,7 +67,7 @@ CMOS transistors consist of two MOS transistors: NMOS and PMOS, which share a co
 <img src="./img/01/Screenshot 2024-09-16 at 19.18.35.png" alt="MOS" width="600">
 
 
-<!-- ## CMOS characteristics 
+## CMOS characteristics 
 
 ### Transfer function 
 
@@ -100,7 +100,7 @@ It is given by the formula: ( P_{dynamic} = \alpha C V^2 f ):
 ### Dynamic behaviour 
 
 The CMOS does not switch on instantaneously. To turn on, the CMOS needs to charge (when the output goes high) or discharge (when the output goes low) the load capacitance. The load capacitance includes the gate capacitance of subsequent logic gates and interconnect capacitance. Additionally, the capacitance of reverse-biased PN junctions must be considered. To lower delay, we can increase power supply voltage, increase channel width/length ratio or reduce number of connected logic gates. 
- -->
+
 
 ## Manufacturing CMOS integrated circuits 
 
