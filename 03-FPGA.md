@@ -13,6 +13,9 @@
 
 ## Conceptual architecture of FPGA devices 
 
+<img src="./img/03/fpga_concept.png" alt="LUT Implementation" style="width:400px;"/>
+
+
 - The FPGA consists of three basic building blocks:
     - CLB — Configurable Logic Block
         - also known as a logic element
@@ -20,6 +23,7 @@
             - look-up tables (LUTs)
             - flip-flops (FFs)
             - additional configuration/control logic
+
     - Routing plane
         - used to connect CLBs to one another
         - relies on Programmable Interconnection Points (PIPs)
@@ -29,6 +33,11 @@
     - I/O blocks
         - interfaces for connecting the FPGA to external signals and devices
         - each I/O pad can be employed either as input or output  
+
+<img src="./img/03/clb.png" alt="LUT Implementation" style="width:400px;"/>
+<img src="./img/03/routing.png" alt="LUT Implementation" style="width:400px;"/>
+<img src="./img/03/io.png" alt="LUT Implementation" style="width:400px;"/>
+
 
 ## Look-up tables (LUTs) as basic elements    
 
