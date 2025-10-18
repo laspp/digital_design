@@ -11,6 +11,25 @@
     - hardware acceleration 
     - similar applications 
 
+## Conceptual architecture of FPGA devices 
+
+- The FPGA consists of three basic building blocks:
+    - CLB — Configurable Logic Block
+        - also known as a logic element
+        - the primary building block for digital designs; consists of:
+            - look-up tables (LUTs)
+            - flip-flops (FFs)
+            - additional configuration/control logic
+    - Routing plane
+        - used to connect CLBs to one another
+        - relies on Programmable Interconnection Points (PIPs)
+            - a PIP is typically a transistor controlled by configuration memory
+                - when the configuration bit is 1, the transistor is ON and connects nodes A and B
+                - otherwise, A and B remain disconnected
+    - I/O blocks
+        - interfaces for connecting the FPGA to external signals and devices
+        - each I/O pad can be employed either as input or output  
+
 ## Look-up tables (LUTs) as basic elements    
 
 - In FPGAs, we rely on LUTs to implement functions.
