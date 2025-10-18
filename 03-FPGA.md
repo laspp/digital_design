@@ -13,29 +13,41 @@
 
 ## Conceptual architecture of FPGA devices 
 
-<img src="./img/03/fpga_concept.png" alt="LUT Implementation" style="width:400px;"/>
+
 
 
 - The FPGA consists of three basic building blocks:
-    - CLB — Configurable Logic Block
-        - also known as a logic element
-        - the primary building block for digital designs; consists of:
-            - look-up tables (LUTs)
-            - flip-flops (FFs)
-            - additional configuration/control logic
+  - CLB
+  - Routing plane
+  - I/O blocks
 
-    - Routing plane
-        - used to connect CLBs to one another
-        - relies on Programmable Interconnection Points (PIPs)
-            - a PIP is typically a transistor controlled by configuration memory
-                - when the configuration bit is 1, the transistor is ON and connects nodes A and B
-                - otherwise, A and B remain disconnected
-    - I/O blocks
-        - interfaces for connecting the FPGA to external signals and devices
-        - each I/O pad can be employed either as input or output  
+<img src="./img/03/fpga_concept.png" alt="LUT Implementation" style="width:300px;"/>
 
-<img src="./img/03/clb.png" alt="LUT Implementation" style="width:400px;"/>
-<img src="./img/03/routing.png" alt="LUT Implementation" style="width:400px;"/>
+
+### CLB — Configurable Logic Block
+  - also known as a logic element
+  - the primary building block for digital designs; consists of:
+      - look-up tables (LUTs)
+      - flip-flops (FFs)
+      - additional configuration/control logic
+
+<img src="./img/03/clb.png" alt="LUT Implementation" style="width:200px;"/>
+
+### Routing plane 
+  - used to connect CLBs to one another
+  - relies on Programmable Interconnection Points (PIPs)
+      - a PIP is typically a transistor controlled by configuration memory
+          - when the configuration bit is 1, the transistor is ON and connects nodes A and B
+          - otherwise, A and B remain disconnected
+<img src="./img/03/routing.png" alt="LUT Implementation" style="width:200px;"/> 
+
+
+### I/O blocks
+  - interfaces for connecting the FPGA to external signals and devices
+  - each I/O pad can be employed either as input or output  
+
+
+
 <img src="./img/03/io.png" alt="LUT Implementation" style="width:400px;"/>
 
 
