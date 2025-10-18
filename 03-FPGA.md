@@ -39,6 +39,7 @@
       - a PIP is typically a transistor controlled by configuration memory
           - when the configuration bit is 1, the transistor is ON and connects nodes A and B
           - otherwise, A and B remain disconnected
+
 <img src="./img/03/routing.png" alt="LUT Implementation" style="width:200px;"/> 
 
 
