@@ -188,18 +188,23 @@ logic [1:0] count; // 4-states -> 2 bits
    
    - Example DFF: 
   ```verilog
-     
-    module DFF(
-      input clk,
-      input D,
-      output Q
-    )
-      // block executes on every positive edge of clk
-      // sensitivity list is refered after @ sign 
-      always_ff @(posedge clk) begin 
+  module dff(
+      input logic clk,
+      input logic rst,
+      input logic D,
+      output logic Q
+    );
+    // block executes on every positive edge of clk
+    // sensitivity list is refered after @ sign 
+    always_ff @(posedge clk) begin 
+      if (rst) begin
+        Q <= 1'b0; 
+      end
+      else begin
         Q <= D; 
       end
-    endmodule 
+    end
+  endmodule  
   ```
 - ```always_comb```
   - used for modeling combinational circuits 
@@ -209,10 +214,10 @@ logic [1:0] count; // 4-states -> 2 bits
   
   ```verilog
     module MUX4to1(
-      input [3:0] I,
-      input [1:0] S,
-      output O
-    )
+      input logic [3:0] I,
+      input logic [1:0] S,
+      output logic O
+    );
       // block executes whenever any of the 
       // input signals of block changes 
       always_comb begin 
