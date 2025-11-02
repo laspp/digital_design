@@ -13,7 +13,7 @@ Let's define the interface of the HSYNC module:
 
 ### HSYNC module implementation
 
-The main idea behind HSYNC signal: 
+The main idea behind implementing HSYNC module: 
 - Parameters:
   - `BP` : back porch
   - `DT` : display time
@@ -23,7 +23,7 @@ The main idea behind HSYNC signal:
   - For 640x480 resolution, we need a mod-800 counter
   - the counter is incremented every pixel_tick and on the rising edge of the clock signal
 - How to generate the output signals:
-  - the HSYNC signal is high when the counter is in the range [0, BP+DT+FP], otherwise it is low
+  - the HSYNC signal is high when the counter is in the range [0, BP+DT+FP-1], otherwise it is low
   - the EOL signal is high when the counter reaches the value 799
   - the HVIDEO_ON signal is high when the counter is in the range [BP, BP+DT-1]
 
@@ -187,7 +187,7 @@ In case 1 (blocking assignment), the value of `b1` is updated immediately after 
 
 
 
-## VHSYNC module 
+## VSYNC module 
 
 Let's define the interface of the VSYNC module:
 - input `clk` : the clock signal
