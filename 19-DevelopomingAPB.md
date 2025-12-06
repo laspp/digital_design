@@ -98,6 +98,7 @@
 
 <img src="./img/10/io_bus.png" alt="LUT Implementation" style="width:400px;"/>
 
+> Image adopted from (https://www.amazon.com/FPGA-Prototyping-SystemVerilog-Examples-MicroBlaze/dp/1119282667)
 
 Write operation:
   1. Master device places the address and data on the bus and asserts the address and write strobe signal
@@ -128,6 +129,7 @@ assign mcs_bridge_enable = (io_address[31:24] == BRG_BASE[31:24]);
    - Indetify whether the transaction is a read or write operation
    - generate command for the APB master
    - generate the valid signal for the APB master
+
 ```verilog
     // Command generation
     // write_req is equal to one when io_write_strobe is asserted and io_read_strobe is not asserted
@@ -141,9 +143,11 @@ assign mcs_bridge_enable = (io_address[31:24] == BRG_BASE[31:24]);
     // regardless of read or write, address_strobe is always asserted when there is a valid address
     assign valid = io_addr_strobe & mcs_bridge_enable; // do not generate any request if we did not select our system
 ```
+
 1. We handle the response from the APB master and generate the appropriate signals for the MCS I/O bus
    - send read data to the MCS I/O bus if the transaction does not have an error (i_resp[DW] == 0)
    - send ready signal to the MCS I/O bus to indicate that read data are available
+
 ```verilog
     // Response handling
     assign io_read_data = i_rdata;
@@ -160,6 +164,7 @@ assign mcs_bridge_enable = (io_address[31:24] == BRG_BASE[31:24]);
 ```
 
 1. Instantiate the APB master module and connect the signals
+
 ```verilog
     APB_master #(
         .DW(DW),   // Data width
