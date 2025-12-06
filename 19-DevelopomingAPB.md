@@ -593,3 +593,75 @@ assign mcs_bridge_enable = (io_address[31:24] == BRG_BASE[31:24]);
         end
     end
 ```
+
+#### Registering the core into SoC platform
+
+- After developing the APB slave, we need to register it into the SoC platform
+  - Instantiate the APB slave module in the top-level SoC module
+  - Connect the APB slave signals to the interconnect signals
+  - Write SW drivers to access the peripheral
+
+- In top module of the SoC platform:
+
+```verilog
+    APB_timer #(
+    .DW(DW),   // Data width
+    .AW(AW)    // Address width
+    ) u_apb_timer (
+    .pCLK    (clock),
+    .pRESETn (resetn),
+    .pADDR   (SpADDR[1]),
+    .pSEL    (SpSEL[1]),
+    .pENABLE (SpENABLE[1]),
+    .pWRITE  (SpWRITE[1]),
+    .pWDATA  (SpWDATA[1]),
+    .pRDATA  (SpRDATA[1]),
+    .pREADY  (SpREADY[1]),
+    .pSLVERR (SpSLVERR[1])
+);
+```
+- Here we instantiate the APB timer peripheral and connect its signals to the interconnect signals
+  - We assume that the timer peripheral is connected to slot 1 in the interconnect
+  - The interconnect signals are arrays, where each index corresponds to a specific peripheral slot
+  - This index determines the base address of the peripheral in the memory map
+  - For slot 1, the base address is 0xC000_0080
+    -  Base address of the APB subsystem: 0xC000_0000
+    -  Offset for slot 1: 0x0000_0080
+> How did we get the offset for slot 1?
+> - Each slot has 32 registers (5 bits for register address)
+> - Each register is 4 bytes (2 bits for byte address)
+> - Therefore, each slot occupies 32 * 4 = 128 bytes (0x80 in hex)
+> - When we get the address of slot 1, the logic in in the interconnect will: 
+>   - generate  PSEL1 signal when the address is in the range of 0xC000_8000 to 0xC000_807F
+> Q: What kind of signals will be generated when we have address 0xC001_0004?
+
+
+- Finally, we need to write SW drivers to access the timer peripheral
+  - The drivers will use the MMIO scheme to read and write the registers of the timer peripheral
+```c
+    #define TIMER_CNTL 0xC0000084
+    #define TIMER_CNTH 0xC0000088
+
+    volatile uint32_t * timer_config = (uint32_t *) TIMER ;
+    volatile uint32_t * timer_count_low = (uint32_t *)(TIMER + 4); // second mistake: need to put parentheses around the addition
+    volatile uint32_t * timer_count_high = (uint32_t *)(TIMER + 8);
+
+    //reset counter
+	*timer_config = 0x00000003;
+	//start counter
+	*timer_config = 0x00000001;
+
+    // measure 1 second delay
+
+    int limit = 100000000; // 100*1e6
+ 
+    counter_new = *timer_count_high;
+    counter_new = *timer_count_low + (counter_new << 32);
+    counter_old = counter_new;
+
+
+    while((counter_old + limit) > counter_new) {
+        counter_new = *timer_count_high;
+        counter_new = *timer_count_low + (counter_new << 32);
+    }
+```
