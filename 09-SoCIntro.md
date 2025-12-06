@@ -1,21 +1,13 @@
 # FPGA System on chip (SoC) development:
 
-<<<<<<< HEAD
-- SoC (System on Chip) a single integrated circuit that contains several components:
-=======
 
 - SoC (System on Chip) a single integrated circuit that packages basic computing components into a single chip.
->>>>>>> ca4f910 (added notes for SoC)
   - CPU: Central Processing Unit
   - simple I/O peripherals
   - special purpose hardware accelerators
   
 - FPGA SoC features:
-<<<<<<< HEAD
-  - taior the processor (applicable to "soft" processors)
-=======
   - tailor the processor (applicable to "soft" processors)
->>>>>>> ca4f910 (added notes for SoC)
   - selecte only required peripherals
   - develop HW accelerators for computationally intensive tasks
   
@@ -67,9 +59,6 @@
   - Device drivers
     - software routines that allow the application software to interact and control the peripheral devices
     - "translator" between the application software and the HW peripherals
-<<<<<<< HEAD
-=======
 
 
 ![UART FSM waveform](./img/18/flow.drawio.png)
->>>>>>> ca4f910 (added notes for SoC)
