@@ -571,7 +571,8 @@ assign mcs_bridge_enable = (io_address[31:24] == BRG_BASE[31:24]);
         end else begin
             pREADY <= 1'b1; // always ready
         end
-    end```
+    end
+```
 
 #### Generating APB slave error signal 
 

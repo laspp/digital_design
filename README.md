@@ -25,3 +25,4 @@ These notes are intended solely for educational purposes. They are not a replace
 - [3.1 FPGA System on Chip (SoC) development](./09-SoCIntro.md)
 - [3.2 On-Chip Communication](./10-OnChipCommunication.md)
 - [3.3 APB protocol](./11-APB.md)
+- [3.4 FPROv2 SoC platform](./19-DevelopomingAPB.md)
