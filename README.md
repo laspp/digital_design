@@ -26,3 +26,7 @@ These notes are intended solely for educational purposes. They are not a replace
 - [3.2 On-Chip Communication](./10-OnChipCommunication.md)
 - [3.3 APB protocol](./11-APB.md)
 - [3.4 FPROv2 SoC platform](./19-DevelopomingAPB.md)
+
+### Appendix: Project Assignments
+
+- [A.1 Project Assignments](./20-ProjectAssignments.md)
