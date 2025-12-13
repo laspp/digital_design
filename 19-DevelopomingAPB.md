@@ -535,32 +535,25 @@ assign mcs_bridge_enable = (io_address[31:24] == BRG_BASE[31:24]);
   - The configuration register is write-only
   
 ```verilog
-        // define register
-    logic [31:0] read_data;
-
+    // define register
     assign rd_en = pSEL & !pWRITE & pREADY & pENABLE ; 
-
-    always_ff @(posedge pCLK) begin
-        if(!pRESETn) begin
-            read_data <= 0;
+    always_comb begin
+        if (rd_en) begin
+            case (pADDR[6:0])
+                `COUNT_LOW: begin
+                    pRDATA = count_reg[31:0];
+                end
+                `COUNT_HIGH: begin
+                    pRDATA = count_reg[63:32];
+                end
+                default: begin
+                    pRDATA = 32'b0;
+                end
+            endcase
         end else begin
-            if (rd_en) begin
-                case (pADDR[6:0])
-                    `COUNT_LOW: begin
-                        read_data <= count_reg[31:0];
-                    end
-                    `COUNT_HIGH: begin
-                        read_data <= count_reg[63:32];
-                    end
-                    default: begin
-                        read_data <= 32'h00;
-                    end
-                endcase
-            end
+            pRDATA = 32'b0;
         end
     end
-
-    assign pRDATA = read_data;
 ```
 
 ##### Generating APB slave ready signal
@@ -570,13 +563,7 @@ assign mcs_bridge_enable = (io_address[31:24] == BRG_BASE[31:24]);
 
 ```verilog
     // Ready state logic
-    always_ff @(posedge pCLK) begin
-        if (!pRESETn) begin
-            pREADY <= 1'b1;
-        end else begin
-            pREADY <= 1'b1; // always ready
-        end
-    end
+    assign pREADY = 1'b1;
 ```
 
 #### Generating APB slave error signal 
@@ -638,36 +625,58 @@ assign mcs_bridge_enable = (io_address[31:24] == BRG_BASE[31:24]);
 > - Each register is 4 bytes (2 bits for byte address)
 > - Therefore, each slot occupies 32 * 4 = 128 bytes (0x80 in hex)
 > - When we get the address of slot 1, the logic in in the interconnect will: 
->   - generate  PSEL1 signal when the address is in the range of 0xC000_8000 to 0xC000_807F
+>   - generate  PSEL1 signal when the address is in the range of 0xC000_0080 to 0xC000_007F
 > Q: What kind of signals will be generated when we have address 0xC001_0004?
 
 
 - Finally, we need to write SW drivers to access the timer peripheral
   - The drivers will use the MMIO scheme to read and write the registers of the timer peripheral
 ```c
-    #define TIMER_CNTL 0xC0000084
-    #define TIMER_CNTH 0xC0000088
+    #include <stdio.h>
+#include <stdint.h>
 
-    volatile uint32_t * timer_config = (uint32_t *) TIMER ;
-    volatile uint32_t * timer_count_low = (uint32_t *)(TIMER + 4); // second mistake: need to put parentheses around the addition
-    volatile uint32_t * timer_count_high = (uint32_t *)(TIMER + 8);
+#define GPIO 0xC0000000
+#define TIMER 0xC0000080
+#define TIMER_CNTL 0xC0000084
+#define TIMER_CNTH 0xC0000088
+
+
+int main()
+{
+
+  volatile uint32_t * led_device = (uint32_t *) (GPIO+4);
+  volatile uint32_t * timer_config = (uint32_t *) TIMER ;
+  volatile uint32_t * timer_count_low = (uint32_t *)(TIMER + 4); // second mistake: need to put parentheses around the addition
+  volatile uint32_t * timer_count_high = (uint32_t *)(TIMER + 8);
+
+  volatile uint64_t counter_new, counter_old, limit;
+
+
+  volatile uint32_t led_value = 0x0000F0F0;
+  *led_device = led_value;
 
     //reset counter
-	*timer_config = 0x00000003;
-	//start counter
-	*timer_config = 0x00000001;
+  *timer_config = 0x00000003;
+  //start counter
+  *timer_config = 0x00000001;
+  // read counter
+  limit = 100000000;
 
-    // measure 1 second delay
+	while(1){
 
-    int limit = 100000000; // 100*1e6
- 
-    counter_new = *timer_count_high;
-    counter_new = *timer_count_low + (counter_new << 32);
-    counter_old = counter_new;
+		led_value =  ~led_value;
+	    *led_device = led_value;
+
+    	counter_new = *timer_count_high;
+    	counter_new = *timer_count_low + (counter_new << 32);
+    	counter_old = counter_new;
 
 
-    while((counter_old + limit) > counter_new) {
-        counter_new = *timer_count_high;
-        counter_new = *timer_count_low + (counter_new << 32);
+    	while((counter_old + limit) > counter_new) {
+    		counter_new = *timer_count_high;
+    	    counter_new = *timer_count_low + (counter_new << 32);
+    	}
     }
+    return 0;
+}
 ```
