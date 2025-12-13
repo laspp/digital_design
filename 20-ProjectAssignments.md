@@ -21,7 +21,7 @@ Please note, that project assignments substitute oral exams. If you do not compl
     - Develop the driver for the core and application that will showcase the functionality of a system
     - Number of students per group: up to 2
 
-## Assignment 3: FproV2 SoC implementation in Chisel
+## Assignment 3: FproV2 SoC implementation in Chisel (Taken)
 
 - Implementing the FproV2 SoC in Chisel 
     - Develop the FproV2 SoC from scratch in Chisel language, which consists of only the memory subsystem 
