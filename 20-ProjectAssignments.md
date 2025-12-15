@@ -29,7 +29,7 @@ Please note, that project assignments substitute oral exams. If you do not compl
     - Note: The UART system should also be added to the implemented SoC 
     - Number of students per group: up to 2
 
-## Assignment 4: Video subsystem in FproV2 SoC
+## Assignment 4: Video subsystem in FproV2 SoC (Taken)
 
 - Add the video subsystem and integrate it inside the FproV2 system. The system should have the following functionality:
   - Core for generating patterns: implement a core that will generate different patterns (e.g., color bars, checkerboard, etc.)
