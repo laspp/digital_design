@@ -28,6 +28,11 @@ These notes are intended solely for educational purposes. They are not a replace
 - [3.4 FPROv2 SoC platform](./19-DevelopomingAPB.md)
 - [3.5 FPROv2 SoC UART core](./20-APB_UART.md)
 
+### Part III: Constraints in digital design flow
+- [4.1 Timing constraints](./13-TimingConstraints.md)
+- [4.2 Pipelining](./14-Pipelining.md)
+
+
 ### Appendix: Project Assignments
 
 - [A.1 Project Assignments](./20-ProjectAssignments.md)
