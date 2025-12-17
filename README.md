@@ -27,6 +27,7 @@ These notes are intended solely for educational purposes. They are not a replace
 - [3.3 APB protocol](./11-APB.md)
 - [3.4 FPROv2 SoC platform](./19-DevelopomingAPB.md)
 - [3.5 FPROv2 SoC UART core](./20-APB_UART.md)
+- [3.6 Memories](./21-Memories.md)
 
 ### Part III: Constraints in digital design flow
 - [4.1 Timing constraints](./13-TimingConstraints.md)
