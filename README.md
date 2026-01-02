@@ -32,6 +32,8 @@ These notes are intended solely for educational purposes. They are not a replace
 ### Part III: Constraints in digital design flow
 - [4.1 Timing constraints](./13-TimingConstraints.md)
 - [4.2 Pipelining](./14-Pipelining.md)
+- [4.3 Metastability and synchronization failure](./15-Metastability.md)
+- [4.4 Synchronizers and Gray Code](./16-Synchronizers.md)
 
 
 ### Appendix: Project Assignments

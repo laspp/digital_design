@@ -96,7 +96,7 @@
 
 ### D latch design in CMOS 
 
-- The D latch is built using two inverters and two transmission gates
+- The D latch is built using two inverters and one transmission gate
   - when the clock signal is high, the transmission gates are open, and the data flows from the input to the output
   - when the clock signal is low, the transmission gates are closed, and the data is latched
   - one of the inverters has tri-state output, i.e., it can be high, low, or high impedance
@@ -111,9 +111,9 @@
   - when the enable signal is high, the transmission gate is on, and the data flows from the input to the output
   - when the enable signal is low, the transmission gate is off, input and output are disconnected
 
-- How does the tri-state inverter work?
-  - when the enable signal is high, the inverter is active, and the output is equal to the inverted input
-  - when the enable signal is low, the inverter is in high impedance, and the output is disconnected from the input 
+- How does the tri-state inverter with inverted enable work?
+  - when the enable signal is low, the inverter is active, and the output is equal to the inverted input
+  - when the enable signal is high, the inverter is in high impedance, and the output is disconnected from the input 
 
 - Setup and hold time constraints of the D flip-flop
   - setup time: the time required for the dat to transition from input to output
