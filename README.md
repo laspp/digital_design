@@ -12,6 +12,9 @@ These notes are intended solely for educational purposes. They are not a replace
 
 ### Part I: Introduction to Digital Design
 - [1.1 PN Junction & CMOS](./01-Intro.md)
+
+<!---
+
 - [1.2 Digital Integrated Circuits](./02-DIC.md)
 - [1.3 FPGA](./03-FPGA.md)
 
@@ -39,3 +42,4 @@ These notes are intended solely for educational purposes. They are not a replace
 ### Appendix: Project Assignments
 
 - [A.1 Project Assignments](./20-ProjectAssignments.md)
+-->
