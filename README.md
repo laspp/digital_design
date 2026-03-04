@@ -14,7 +14,10 @@ These notes are intended solely for educational purposes. They are not a replace
 - [1.1 PN Junction & CMOS](./01-Intro.md)
 - [1.2 Digital Integrated Circuits](./02-DIC.md)
 - [1.3 FPGA](./03-FPGA.md)
+
+
 <!---
+
 ### Part II: Modeling Digital Systems with SystemVerilog
 - [2.1 Introduction to VGA controller](./05-VGA.md)
 - [2.2 VGA Controller Implementation](./06-VGA.md)
