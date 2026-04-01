@@ -20,8 +20,12 @@ These notes are intended solely for educational purposes. They are not a replace
 - [2.1 Introduction to VGA controller](./05-VGA.md)
 - [2.2 VGA Controller Implementation](./06-VGA.md)
 - [2.3 Intro to UART and FSM](./07-UART.md)
-  
+
+
 <!---
+TEST
+
+
 - [2.4 UART Implementation](./08-UART.md)
 
 ### Part III: FPGA-based System on Chip (SoC) Design
