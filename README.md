@@ -23,14 +23,16 @@ These notes are intended solely for educational purposes. They are not a replace
 - [2.4 UART Implementation](./08-UART.md)
 
 
-<!---
-TEST
+
 
 
 
 ### Part III: FPGA-based System on Chip (SoC) Design
 - [3.1 FPGA System on Chip (SoC) development](./09-SoCIntro.md)
 - [3.2 On-Chip Communication](./10-OnChipCommunication.md)
+
+<!---
+TEST
 - [3.3 APB protocol](./11-APB.md)
 - [3.4 FPROv2 SoC platform](./19-DevelopomingAPB.md)
 - [3.5 FPROv2 SoC UART core](./20-APB_UART.md)
