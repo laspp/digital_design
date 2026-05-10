@@ -58,12 +58,12 @@ Please note, that project assignments substitute oral exams. If you do not compl
   - Develop the driver for the core and application that will showcase the functionality of a system
   - Number of students per group: up to 2
 
-## Assignment 7: Developing Posit arithmetic core 
-- Develop a Posit arithmetic core that supports multiplication and addition operations
-  - The core should support different Posit configurations (e.g., 8-bit, 16-bit, etc.)
-  - Integrate the Posit core inside the MMIO subsystem
-  - Develop the driver for the core and application that will showcase the functionality of a system
-  - Number of students per group: up to 2
+## Assignment 7: I2C core integration in FproSoC 
+- Add I2C controller core to the Fpro system:
+    - Develop the I2C controller, which will read data from the temperature sensor  
+    - Integrate the I2C core inside the MMIO subsystem 
+    - Develop the driver for the core and application that will showcase the functionality of a system
+    - Number of students per group: up to 2
 
 ## Assignment 8: Chipyard SoC development
 - Utilize the Chipyard framework to design and implement a custom SoC.
