@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  body { margin: 0; background: white; font-family: sans-serif; }
+  svg text { font-family: sans-serif; fill: #1a1a1a; }
+  svg text.th { font-size: 14px; font-weight: 500; }
+  svg text.ts { font-size: 12px; font-weight: 400; fill: #444; }
+  .save-btn { display: block; margin: 16px auto; padding: 8px 20px; font-size: 14px; cursor: pointer; }
+</style>
+</head>
+<body>
+<button class="save-btn" onclick="savePNG()">Save as PNG</button>
+<svg id="diagram" width="680" viewBox="0 0 680 540" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <rect width="680" height="540" fill="white"/>
+
+  <!-- BLOCKING SECTION -->
+  <text class="th" x="40" y="36">Blocking</text>
+  <text class="ts" x="40" y="54">Initiator waits for each response before sending the next request</text>
+
+  <text class="ts" x="118" y="82" text-anchor="end">Cycle</text>
+  <text class="ts" x="152" y="82" text-anchor="middle">1</text>
+  <text class="ts" x="208" y="82" text-anchor="middle">2</text>
+  <text class="ts" x="264" y="82" text-anchor="middle">3</text>
+  <text class="ts" x="320" y="82" text-anchor="middle">4</text>
+  <text class="ts" x="376" y="82" text-anchor="middle">5</text>
+  <text class="ts" x="432" y="82" text-anchor="middle">6</text>
+  <text class="ts" x="488" y="82" text-anchor="middle">7</text>
+  <text class="ts" x="544" y="82" text-anchor="middle">8</text>
+
+  <text class="ts" x="118" y="113" text-anchor="end">Request</text>
+  <text class="ts" x="118" y="149" text-anchor="end">Response</text>
+  <text class="ts" x="118" y="185" text-anchor="end">Initiator</text>
+
+  <!-- REQ blocks -->
+  <rect x="124" y="96" width="56" height="26" rx="4" fill="#1D9E75" stroke="#0F6E56" stroke-width="0.5"/>
+  <text class="ts" x="152" y="113" text-anchor="middle" fill="#085041">REQ 1</text>
+  <rect x="348" y="96" width="56" height="26" rx="4" fill="#1D9E75" stroke="#0F6E56" stroke-width="0.5"/>
+  <text class="ts" x="376" y="113" text-anchor="middle" fill="#085041">REQ 2</text>
+
+  <!-- RSP blocks -->
+  <rect x="236" y="132" width="56" height="26" rx="4" fill="#D85A30" stroke="#993C1D" stroke-width="0.5"/>
+  <text class="ts" x="264" y="149" text-anchor="middle" fill="#4A1B0C">RSP 1</text>
+  <rect x="460" y="132" width="56" height="26" rx="4" fill="#D85A30" stroke="#993C1D" stroke-width="0.5"/>
+  <text class="ts" x="488" y="149" text-anchor="middle" fill="#4A1B0C">RSP 2</text>
+
+  <!-- Initiator state -->
+  <rect x="124" y="168" width="56" height="26" rx="4" fill="#7F77DD" stroke="#534AB7" stroke-width="0.5"/>
+  <text class="ts" x="152" y="185" text-anchor="middle" fill="#26215C">BUSY</text>
+  <rect x="180" y="168" width="112" height="26" rx="4" fill="none" stroke="#ccc" stroke-width="0.5"/>
+  <text class="ts" x="236" y="185" text-anchor="middle" fill="#888">WAIT</text>
+  <rect x="292" y="168" width="56" height="26" rx="4" fill="none" stroke="#ccc" stroke-width="0.5"/>
+  <text class="ts" x="320" y="185" text-anchor="middle" fill="#bbb">IDLE</text>
+  <rect x="348" y="168" width="56" height="26" rx="4" fill="#7F77DD" stroke="#534AB7" stroke-width="0.5"/>
+  <text class="ts" x="376" y="185" text-anchor="middle" fill="#26215C">BUSY</text>
+  <rect x="404" y="168" width="112" height="26" rx="4" fill="none" stroke="#ccc" stroke-width="0.5"/>
+  <text class="ts" x="460" y="185" text-anchor="middle" fill="#888">WAIT</text>
+  <rect x="516" y="168" width="56" height="26" rx="4" fill="none" stroke="#ccc" stroke-width="0.5"/>
+  <text class="ts" x="544" y="185" text-anchor="middle" fill="#bbb">IDLE</text>
+
+  <!-- stalls annotation -->
+  <line x1="180" y1="109" x2="234" y2="109" stroke="#888" stroke-width="0.8" stroke-dasharray="3 3" marker-end="url(#arrow)" fill="none"/>
+  <text class="ts" x="208" y="105" text-anchor="middle" fill="#888">stalls</text>
+
+  <!-- Divider -->
+  <line x1="40" y1="218" x2="640" y2="218" stroke="#ccc" stroke-width="0.5"/>
+
+  <!-- PIPELINED SECTION -->
+  <text class="th" x="40" y="248">Pipelined</text>
+  <text class="ts" x="40" y="266">Initiator sends new requests without waiting for previous responses</text>
+
+  <text class="ts" x="118" y="294" text-anchor="end">Cycle</text>
+  <text class="ts" x="152" y="294" text-anchor="middle">1</text>
+  <text class="ts" x="208" y="294" text-anchor="middle">2</text>
+  <text class="ts" x="264" y="294" text-anchor="middle">3</text>
+  <text class="ts" x="320" y="294" text-anchor="middle">4</text>
+  <text class="ts" x="376" y="294" text-anchor="middle">5</text>
+  <text class="ts" x="432" y="294" text-anchor="middle">6</text>
+
+  <text class="ts" x="118" y="325" text-anchor="end">Request</text>
+  <text class="ts" x="118" y="361" text-anchor="end">Response</text>
+  <text class="ts" x="118" y="397" text-anchor="end">Initiator</text>
+
+  <!-- Pipelined REQ -->
+  <rect x="124" y="308" width="56" height="26" rx="4" fill="#1D9E75" stroke="#0F6E56" stroke-width="0.5"/>
+  <text class="ts" x="152" y="325" text-anchor="middle" fill="#085041">REQ 1</text>
+  <rect x="180" y="308" width="56" height="26" rx="4" fill="#1D9E75" stroke="#0F6E56" stroke-width="0.5"/>
+  <text class="ts" x="208" y="325" text-anchor="middle" fill="#085041">REQ 2</text>
+  <rect x="236" y="308" width="56" height="26" rx="4" fill="#1D9E75" stroke="#0F6E56" stroke-width="0.5"/>
+  <text class="ts" x="264" y="325" text-anchor="middle" fill="#085041">REQ 3</text>
+
+  <!-- Pipelined RSP -->
+  <rect x="292" y="344" width="56" height="26" rx="4" fill="#D85A30" stroke="#993C1D" stroke-width="0.5"/>
+  <text class="ts" x="320" y="361" text-anchor="middle" fill="#4A1B0C">RSP 1</text>
+  <rect x="348" y="344" width="56" height="26" rx="4" fill="#D85A30" stroke="#993C1D" stroke-width="0.5"/>
+  <text class="ts" x="376" y="361" text-anchor="middle" fill="#4A1B0C">RSP 2</text>
+  <rect x="404" y="344" width="56" height="26" rx="4" fill="#D85A30" stroke="#993C1D" stroke-width="0.5"/>
+  <text class="ts" x="432" y="361" text-anchor="middle" fill="#4A1B0C">RSP 3</text>
+
+  <!-- Initiator state -->
+  <rect x="124" y="380" width="168" height="26" rx="4" fill="#7F77DD" stroke="#534AB7" stroke-width="0.5"/>
+  <text class="ts" x="208" y="397" text-anchor="middle" fill="#26215C">BUSY (back-to-back)</text>
+  <rect x="292" y="380" width="168" height="26" rx="4" fill="none" stroke="#ccc" stroke-width="0.5"/>
+  <text class="ts" x="376" y="397" text-anchor="middle" fill="#bbb">IDLE</text>
+
+  <!-- in-flight brace -->
+  <line x1="124" y1="420" x2="404" y2="420" stroke="#888" stroke-width="0.5"/>
+  <line x1="124" y1="415" x2="124" y2="425" stroke="#888" stroke-width="0.5"/>
+  <line x1="404" y1="415" x2="404" y2="425" stroke="#888" stroke-width="0.5"/>
+  <text class="ts" x="264" y="436" text-anchor="middle" fill="#888">3 transactions in flight simultaneously</text>
+
+  <!-- Legend -->
+  <rect x="40" y="462" width="600" height="62" rx="8" fill="none" stroke="#ddd" stroke-width="0.5"/>
+  <rect x="56" y="479" width="14" height="14" rx="2" fill="#1D9E75"/>
+  <text class="ts" x="76" y="490">Request</text>
+  <rect x="156" y="479" width="14" height="14" rx="2" fill="#D85A30"/>
+  <text class="ts" x="176" y="490">Response</text>
+  <text class="ts" x="290" y="483" fill="#666">Blocking: 1 txn / 4 cycles</text>
+  <text class="ts" x="290" y="500" fill="#666">Latency per txn: 3 cycles (both)</text>
+  <text class="ts" x="490" y="483" fill="#666">Pipelined: 1 txn / cycle</text>
+  <text class="ts" x="490" y="500" fill="#666">(after pipeline fills)</text>
+</svg>
+
+<script>
+function savePNG() {
+  const svg = document.getElementById('diagram');
+  const serializer = new XMLSerializer();
+  const svgStr = serializer.serializeToString(svg);
+  const canvas = document.createElement('canvas');
+  canvas.width = 1360;
+  canvas.height = 1080;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(2, 2);
+  const img = new Image();
+  const blob = new Blob([svgStr], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  img.onload = function() {
+    ctx.drawImage(img, 0, 0);
+    URL.revokeObjectURL(url);
+    const a = document.createElement('a');
+    a.download = 'blocking_vs_pipelined.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  };
+  img.src = url;
+}
+</script>
+</body>
+</html>
