@@ -44,9 +44,8 @@ TEST
 - [4.2 Pipelining](./14-Pipelining.md)
 - [4.3 Metastability and synchronization failure](./15-Metastability.md)
 - [4.4 Synchronizers and Gray Code](./16-Synchronizers.md)
+--->
 
-
-### Appendix: Project Assignments
+ Appendix: Project Assignments
 
 - [A.1 Project Assignments](./20-ProjectAssignments.md)
---->

@@ -34,7 +34,7 @@ Please note, that project assignments substitute oral exams. If you do not compl
     - the user should be able to set the sprite position via MMIO registers
     - the sprite data should be stored in a memory buffer 
   - The source of the video system should be to the framebuffer memory
-  - Number of students per group: up to 3
+  - Number of students per group: up to 2
 
 ## Assignment 4: Building SD card controller in FproSoC
 - Add SD card controller core to the FproV3 system
@@ -56,7 +56,7 @@ Please note, that project assignments substitute oral exams. If you do not compl
   - the core should be able to read/write data from/to the Quad SPI flash memory
   - Integrate the Quad SPI core inside the MMIO subsystem
   - Develop the driver for the core and application that will showcase the functionality of a system
-  - Number of students per group: up to 3
+  - Number of students per group: up to 2
 
 ## Assignment 7: Developing Posit arithmetic core 
 - Develop a Posit arithmetic core that supports multiplication and addition operations
@@ -69,12 +69,12 @@ Please note, that project assignments substitute oral exams. If you do not compl
 - Utilize the Chipyard framework to design and implement a custom SoC.
 - Integrate various peripherals and cores into the SoC using Chipyard's modular components.
 - Test and validate the functionality of the SoC through simulation and synthesis.
-- Number of students per group: up to 3
+- Number of students per group: up to 2
 
 ##  Assignment 9: Your project idea
 - Propose your project idea related to digital design/SoC development
 - The project should be approved by the instructor
-- Number of students per group: up to 3
+- Number of students per group: up to 2
 
 
 
