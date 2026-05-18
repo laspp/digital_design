@@ -300,7 +300,7 @@ always_ff @(posedge CLK)
   - The interconnect needs to multiplex the read data from the selected slave to the master
   - The interconnect also needs to handle the PREADY signal from the selected slave to the master
 
-| we_o | ADDRESS (module bits) | PRDATA   |
+| we_o | ADDRESS (module bits) | rddata   |
 |-------|-----------------------|---------|
 |1|Dont care |0|
 |0|Base address of IO core  0|From IO core  0|
@@ -308,6 +308,9 @@ always_ff @(posedge CLK)
 |0|Base address of IO core  2|From IO core  2|
 |0|Base address of IO core  3|From IO core  3|
 |0|Otherwise|0|
+
+<img src="./img/23/system_mux.png" alt="LUT Implementation" style="width:400px;"/>
+
 
 ### Address space of the FPROv2 SoC platform:
 
@@ -429,16 +432,14 @@ always_ff @(posedge CLK)
     - Count high register (offset 0x08): contains the upper 32 bits of the timer count
       - read-only register
 
-- In this example, we presume that:
-  - Writing to the peripheral requires one cycle
-  - Reading from the peripheral requires two cycles (one cycle to set up the read and one cycle to read the data)
+
   
-- The design of the APB slave includes:
-  - Wrapping logic to interface with the APB bus
+- The design of the OBI slave includes:
+  - Wrapping logic to interface with the OBI bus
     - State machine to manage the read and write operations
     - Decoding logic to select the appropriate register based on the address
   - Logic that implements the timer functionality
-  - Logic to generate the APB slave error signal
+  - Logic to generate the OBI slave error signal
 
 
 - TBD 
