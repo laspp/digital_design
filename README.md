@@ -32,12 +32,14 @@ These notes are intended solely for educational purposes. They are not a replace
 - [3.2 On-Chip Communication](./10-OnChipCommunication.md)
 - [3.3 OBI protocol](./22-OBI.md)
 - [3.4 FPROv3 SoC platform](./23-DevelopomingOBI.md)
+- [3.5 FPROv3 SoC UART core](./24-OBI_UART.md)
 - [3.6 Memories](./21-Memories.md)
 
 ### Part III: Constraints in digital design flow
 - [4.1 Timing constraints](./13-TimingConstraints.md)
 - [4.2 Pipelining](./14-Pipelining.md)
 - [4.3 Metastability and synchronization failure](./15-Metastability.md)
+- [4.4 Synchronizers and Gray Code](./16-Synchronizers.md)
 
 <!---
 TEST
@@ -46,7 +48,6 @@ TEST
 - [3.5 FPROv2 SoC UART core](./20-APB_UART.md)
 
 
-- [4.4 Synchronizers and Gray Code](./16-Synchronizers.md)
 --->
 
  Appendix: Project Assignments
