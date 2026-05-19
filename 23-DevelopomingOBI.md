@@ -1,4 +1,4 @@
-# Developing APB based SoC platform
+# Developing OBI based SoC platform
 
 
 - In this section, we will develop a simple SoC platform based on the OBI protocol 
@@ -79,9 +79,9 @@
 
 ## FPRO bridge 
 
-- The bridge will intercept the MCS I/O bus signals and generate the according request to the APB master 
+- The bridge will intercept the MCS I/O bus signals and generate the according request to the OBI master 
   - read or write request
-- The bridge will also handle the response from the APB master and generate the appropriate signals for the MCS I/O bus 
+- The bridge will also handle the response from the OBI master and generate the appropriate signals for the MCS I/O bus 
 
 ### MCS I/O bus protocol
 
@@ -407,7 +407,7 @@ always_ff @(posedge CLK)
 - When developing slave, we need to:
   - Implement custom logic, that represents the functionality of the peripheral
   - define the register map of the peripheral
-  - implement the APB slave interface
+  - implement the OBI slave interface
     - decoding logic for write operations
     - multiplexing logic for read operations
   - write the SW drivers to access the peripheral
