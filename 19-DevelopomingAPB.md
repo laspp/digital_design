@@ -632,7 +632,7 @@ assign mcs_bridge_enable = (io_address[31:24] == BRG_BASE[31:24]);
 - Finally, we need to write SW drivers to access the timer peripheral
   - The drivers will use the MMIO scheme to read and write the registers of the timer peripheral
 ```c
-    #include <stdio.h>
+#include <stdio.h>
 #include <stdint.h>
 
 #define GPIO 0xC0000000

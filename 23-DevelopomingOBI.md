@@ -441,5 +441,297 @@ always_ff @(posedge CLK)
   - Logic that implements the timer functionality
   - Logic to generate the OBI slave error signal
 
+#### OBI slave finite state machine 
 
-- TBD 
+- The state machine has the following states:
+  - ADDR: entering the address phase of the transaction 
+  - RESP: entering the response phase of the transaction 
+
+```verilog  
+   // slave FSM states
+    typedef enum logic {
+        ADDR,
+        RESP
+    } state_t;
+    state_t state, next_state;
+
+    always_ff @(posedge obi_clk_i) begin
+        if (!obi_rstn_i) begin
+            state <= ADDR;
+        end else begin
+            state <= next_state;
+        end
+    end
+```
+
+- Transition between states:
+  - In the ADDR state, we wait for the handshake signals to be asserted on address channel (`obi_gnt_i` and `obi_rvalid_i`) to move to the RESP state
+  - In the RESP state, we wait for the master to be ready to accept the response (`obi_rready_i`), then we move back to the ADDR state
+
+- Generating signals:
+  - the FSM generates the latch signal for the address and data from the master when the handshake signals are asserted in the ADDR state. 
+    - this means that the valid address and data from the master are latched into the slave when the slave has accepted the request and the read data is valid
+
+```verilog  
+always_comb begin : OBI_SLAVE_next_state
+        next_state = state;
+        latch_addr = 1'b0; // default value for latch_addr
+        case (state)
+            ADDR: begin
+                if (obi_gnt_o & obi_req_i) begin
+                    next_state = RESP;
+                    latch_addr = 1'b1; // latch address at the end of address phase
+                end
+            end
+            RESP: begin
+                if (obi_rvalid_o & obi_rready_i) begin
+                    next_state = ADDR;
+                end
+            end
+        endcase
+    end
+```
+
+
+<img src="./img/23/fsm_slave.png" alt="LUT Implementation" style="width:400px;"/>
+
+#### Generating valid and ready signals for the OBI slave
+
+- For the timer peripheral, we assume that the timer can always accept the request from the master and the operation can always be completed in one cycle, meaning that there is no wait state for the timer peripheral. 
+
+
+```verilog  
+ assign obi_gnt_o = 1'b1 & !(state == RESP); // when you are in the response phase, you should not accept new requests, so gnt is low. In other states, gnt is high when there is a request
+    assign obi_rvalid_o = 1'b1 & (state == RESP); // rvalid is high when you are in the response phase 
+```
+
+#### Decoding logic for write operation
+
+- The decoding logic is used to select the appropriate register based on the address from the master
+- Before we can decode the address, we need to latch the address from the master when the handshake signals are asserted in the ADDR state of the FSM
+  - this ensures that we have a stable address to decode and select the appropriate register
+- Using the latched address, we can decode the address to select the appropriate register for the write operation
+
+<img src="./img/23/slave_write.png" alt="LUT Implementation" style="width:400px;"/>
+
+- generation of enable signal is done according to following table:
+
+|state (FSM slave)| we_o | ADDRESS (register bits) | e(3:0)|
+|--|-------|-----------------------|---------|
+|ADDR|X|Dont care |0|
+|RESP|0|Dont care |0|
+|RESP|1|0x00 (Register 0)|1|
+|RESP|1|0x04 (Register 1)|2|
+|RESP|1|0x08 (Register 2)|4|  
+|RESP|1|0x0C (Register 2)|8|  
+
+- For timer example, we have only one writeable register (configuration register), so we only need to decode the address for that register and generate the enable signal for that register. 
+
+```verilog  
+// OBI Write interface 
+    // Latching address and write data at the end of address phase to use in response phase
+
+    logic [OBI_ADDR_WIDTH-1:0] latched_addr;
+    logic [OBI_DATA_WIDTH-1:0] latched_wdata;
+    logic latched_we;
+
+    always_ff @(posedge obi_clk_i) begin
+        if (!obi_rstn_i) begin
+            latched_addr <= 0;
+            latched_wdata <= 0;
+            latched_we <= 0;
+        end else begin
+            if (latch_addr) begin
+                latched_addr <= obi_addr_i;
+                latched_wdata <= obi_wdata_i;
+                latched_we <= obi_we_i;
+            end 
+        end
+    end 
+
+
+
+    logic [31:0] timer_config;
+    logic wr_en;
+    assign wr_en = state == RESP & latched_we & (latched_addr[6:0] == `TIMER_CONF_OFF); // Needs to ensure write request is valid and handshake occured in address phase
+
+  
+    // reg data 0x0
+    always_ff @(posedge obi_clk_i) begin
+        if (!obi_rstn_i) begin
+            timer_config <= 0;
+        end else begin
+            if (wr_en) begin
+                timer_config <= latched_wdata;
+            end
+        end
+    end
+
+```
+
+#### Multiplexing logic for read operation
+
+- The multiplexing logic is used to select the appropriate data to be sent back to the master based on the address from the master
+- Similar to the write operation, we need to latch the address from the master when the handshake signals are asserted in the ADDR state of the FSM to have a stable address for decoding and selecting the appropriate data to be sent back to the master
+- Using the latched address, we can decode the address to select the appropriate data from the registers to be sent back to the master for the read operation
+
+<img src="./img/23/slave_read.png" alt="LUT Implementation" style="width:400px;"/>
+
+
+- generation of read data is done according to following table:
+
+|state (FSM slave)| we_o | ADDRESS (register bits) | rdata|
+|--|-------|-----------------------|---------|
+|ADDR|X|Dont care |0|
+|RESP|1|Dont care |0|
+|RESP|0|0x00 (Register 0)| From register 0|
+|RESP|0|0x04 (Register 1)| From register 1|
+|RESP|0|0x08 (Register 2)| From register 2|
+|RESP|0|0x0C (Register 2)| From register 2|  
+
+- For timer example, we have two readable registers (count low and count high), so we need to decode the address for those registers and select the appropriate data from those registers to be sent back to the master. 
+
+```verilog
+    // OBI read interface
+    logic rd_en[1:0];
+    assign rd_en[0] = state == RESP & !latched_we & (latched_addr[6:0] == `TIMER_COUNTL_OFF); // read from the TIMER_COUNTL register when there is a valid read request and the address is correct
+    assign rd_en[1] = state == RESP & !latched_we & (latched_addr[6:0] == `TIMER_COUNTH_OFF); // read from the TIMER_COUNTH register when there is a valid read request and the address is correct  
+    
+    // forwarding response data
+    logic [OBI_DATA_WIDTH-1:0] latched_rdata;
+    always_comb begin
+        if(rd_en[0]) begin
+            obi_rdata_o = timer_count[31:0];
+        end else if (rd_en[1]) begin
+            obi_rdata_o = timer_count[63:32];
+        end else begin
+            obi_rdata_o = 32'b0; // for invalid read requests, return 0
+        end
+    end
+```
+
+#### Custom logic for the timer peripheral
+
+- The custom logic for the timer peripheral includes:
+  - A 64-bit timer count register that increments on each clock cycle when the timer is enabled
+  - Logic to reset the timer count when the reset bit in the configuration register is set
+  - Logic to enable or disable the timer based on the enable bit in the configuration register
+  
+```verilog  
+    // Timer logic
+    logic [63:0] timer_count;
+    logic timer_start, timer_reset;
+
+    assign timer_start = timer_config[0];
+    assign timer_reset = timer_config[1]; 
+
+    always_ff @(posedge obi_clk_i) begin
+        if (!obi_rstn_i) begin
+            timer_count <= 0;
+        end else begin
+            if(timer_start) begin
+                if(timer_reset) begin
+                    timer_count <= 0;
+                end else begin
+                    timer_count <= timer_count + 1;
+                end
+            end
+        end
+    end
+  
+```
+
+ #### Registering the core into SoC platform
+
+- After developing the OBI slave, we need to register it into the SoC platform
+  - Instantiate the OBI slave module in the top-level SoC module
+  - Connect the OBI slave signals to the interconnect signals
+  - Write SW drivers to access the peripheral
+
+- In top module of the SoC platform:
+
+```verilog
+  // 0xC000_0000 + 0x80
+  obi_timer #(
+      .OBI_ADDR_WIDTH(AW),
+      .OBI_DATA_WIDTH(DW)
+  ) u_obi_timer (
+      .obi_clk_i     (clock),
+      .obi_rstn_i    (resetn),
+      .obi_req_i     (slave_obi_req[1]),
+      .obi_gnt_o     (slave_obi_gnt[1]),
+      .obi_addr_i    (slave_obi_addr[1]),
+      .obi_we_i      (slave_obi_we[1]),
+      .obi_wdata_i  (slave_obi_wdata[1]),
+      .obi_be_i      (slave_obi_be[1]),
+      .obi_rready_i (1'b1), // always ready to accept data
+      .obi_rvalid_o (slave_obi_rvalid[1]),
+      .obi_rdata_o  (slave_obi_rdata[1]),
+      .obi_err_o     (slave_obi_err[1])
+  );
+```
+- Here we instantiate the OBI timer peripheral and connect its signals to the interconnect signals
+  - We assume that the timer peripheral is connected to slot 1 in the interconnect
+  - The interconnect signals are arrays, where each index corresponds to a specific peripheral slot
+  - This index determines the base address of the peripheral in the memory map
+  - For slot 1, the base address is 0xC000_0080
+    -  Base address of the OBI subsystem: 0xC000_0000
+    -  Offset for slot 1: 0x0000_0080
+> How did we get the offset for slot 1?
+> - Each slot has 32 registers (5 bits for register address)
+> - Each register is 4 bytes (2 bits for byte address)
+> - Therefore, each slot occupies 32 * 4 = 128 bytes (0x80 in hex)
+> - When we get the address of slot 1, the logic in in the interconnect will: 
+>   - generate  obi_req[1] signal when the address is in the range of 0xC000_0080 to 0xC000_007F
+
+- Finally, we need to write SW drivers to access the timer peripheral
+  - The drivers will use the MMIO scheme to read and write the registers of the timer peripheral
+```c
+    #include <stdio.h>
+#include <stdint.h>
+
+#define GPIO 0xC0000000
+#define TIMER 0xC0000080
+#define TIMER_CNTL 0xC0000084
+#define TIMER_CNTH 0xC0000088
+
+
+int main()
+{
+
+  volatile uint32_t * led_device = (uint32_t *) (GPIO+4);
+  volatile uint32_t * timer_config = (uint32_t *) TIMER ;
+  volatile uint32_t * timer_count_low = (uint32_t *)(TIMER + 4); // second mistake: need to put parentheses around the addition
+  volatile uint32_t * timer_count_high = (uint32_t *)(TIMER + 8);
+
+  volatile uint64_t counter_new, counter_old, limit;
+
+
+  volatile uint32_t led_value = 0x0000F0F0;
+  *led_device = led_value;
+
+    //reset counter
+  *timer_config = 0x00000003;
+  //start counter
+  *timer_config = 0x00000001;
+  // read counter
+  limit = 100000000;
+
+	while(1){
+
+		led_value =  ~led_value;
+	    *led_device = led_value;
+
+    	counter_new = *timer_count_high;
+    	counter_new = *timer_count_low + (counter_new << 32);
+    	counter_old = counter_new;
+
+
+    	while((counter_old + limit) > counter_new) {
+    		counter_new = *timer_count_high;
+    	    counter_new = *timer_count_low + (counter_new << 32);
+    	}
+    }
+    return 0;
+}
+```
