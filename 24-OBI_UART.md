@@ -173,9 +173,9 @@ Unlike in previous cores, the `obi_grant_o` signal is generated per registers. W
 
 > Note: The `state == RESP` condition is added to ensure that the grant signal is not asserted during the response phase of a transaction, which could lead to unintended behavior.
 
-## Integrating the UART core into FProV2 SoC
+## Integrating the UART core into FProV3 SoC
 
-The final step is to integrate the UART core into the FProV2 SoC in the top-level SoC module. This involves instantiating the UART core in the top-level SoC module and connecting it to the APB bus.
+The final step is to integrate the UART core into the FProV3 SoC in the top-level SoC module. This involves instantiating the UART core in the top-level SoC module and connecting it to the OBI bus.
 
 ```verilog
 obi_uart #(
@@ -207,7 +207,7 @@ for (i = 3; i < NUM_PERIPHERALS; i++) begin : gen_addr
 end
 ```
 
-The base address of the UART core is `0xC000_0100`, and it occupies 3 registers. The UART core is connected to the third slot of the APB bus (`slave_obi_addr[2]`, `slave_obi_req[2]`, etc.).
+The base address of the UART core is `0xC000_0100`, and it occupies 3 registers. The UART core is connected to the third slot of the OBI bus (`slave_obi_addr[2]`, `slave_obi_req[2]`, etc.).
 
 
 ## Driver for UART core
